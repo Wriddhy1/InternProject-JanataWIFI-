@@ -32,7 +32,7 @@ def get_stocks():
     try:
         connection = get_db_connection()
         cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM Stocks LIMIT 1000")  # Add LIMIT to prevent overload
+        cursor.execute("SELECT * FROM stocks LIMIT 1000")  # Add LIMIT to prevent overload
         stocks = cursor.fetchall()
         cursor.close()
         connection.close()
@@ -51,7 +51,7 @@ def create_stock(stock: Stock):
     cursor = connection.cursor()
 
     cursor.execute("""
-        INSERT INTO Stocks (date, trade_code, high, low, open, close, volume)
+        INSERT INTO stocks (date, trade_code, high, low, open, close, volume)
         VALUES (%s, %s, %s, %s, %s, %s, %s)
     """, (stock.date, stock.trade_code, stock.high, stock.low, stock.open, stock.close, stock.volume))
 
@@ -69,7 +69,7 @@ def update_stock(stock_id: int, stock: Stock):
     print(f"Updating stock ID {stock_id} with: {stock}")  # Debugging line
 
     cursor.execute("""
-        UPDATE Stocks
+        UPDATE stocks
         SET date=%s, trade_code=%s, high=%s, low=%s, open=%s, close=%s, volume=%s
         WHERE id=%s
     """, (stock.date, stock.trade_code, stock.high, stock.low, stock.open, stock.close, stock.volume, stock_id))
@@ -86,7 +86,7 @@ def delete_stock(stock_id: int):
     connection = get_db_connection()
     cursor = connection.cursor()
 
-    cursor.execute("DELETE FROM Stocks WHERE id=%s", (stock_id,))
+    cursor.execute("DELETE FROM stocks WHERE id=%s", (stock_id,))
     connection.commit()
     cursor.close()
     connection.close()
