@@ -13,7 +13,7 @@ def get_db_connection():
         password=os.getenv("MYSQL_ADDON_PASSWORD"),
         database=os.getenv("MYSQL_ADDON_DB"),
         port=int(os.getenv("MYSQL_ADDON_PORT")),
-        ssl_disabled=False  # Enable SSL for Clever-Cloud
+        ssl_disabled=True  # Enable SSL for Clever-Cloud
     )
 
 # Data Model for Validation
