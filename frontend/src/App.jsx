@@ -11,7 +11,7 @@ function App() {
   // Fetch stock data from backend
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/data")
+      .get("https://internproject-janatawifi-backend.onrender.com/data")
       .then((response) => {
         const sortedData = response.data.sort(
           (a, b) => new Date(a.date) - new Date(b.date)
@@ -36,7 +36,7 @@ function App() {
   const handleSave = async () => {
     try {
       await axios.put(
-        `http://127.0.0.1:8000/data/${editedStock.id}`,
+        `https://internproject-janatawifi-backend.onrender.com/data/${editedStock.id}`,
         editedStock
       );
       setStocks(
@@ -53,7 +53,7 @@ function App() {
   // Delete a stock record
   const handleDelete = async (stockId) => {
     try {
-      await axios.delete(`http://127.0.0.1:8000/data/${stockId}`);
+      await axios.delete(`https://internproject-janatawifi-backend.onrender.com/data/${stockId}`);
       setStocks(stocks.filter((stock) => stock.id !== stockId));
     } catch (error) {
       console.error("Error deleting stock:", error);
