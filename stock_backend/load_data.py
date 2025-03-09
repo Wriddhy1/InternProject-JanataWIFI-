@@ -1,13 +1,16 @@
 import json
 import mysql.connector
+import os
 
 # Connect to MySQL
 db_connection = mysql.connector.connect(
-    host="localhost",
-    user="root",  # Default MySQL username in XAMPP
-    password="",  # Default MySQL password is empty
-    database="StockMarketDB"
-)
+        host=os.getenv("MYSQL_ADDON_HOST"),
+        user=os.getenv("MYSQL_ADDON_USER"),
+        password=os.getenv("MYSQL_ADDON_PASSWORD"),
+        database=os.getenv("MYSQL_ADDON_DB"),
+        port=int(os.getenv("MYSQL_ADDON_PORT")),
+        ssl_disabled=False  # Enable SSL for Clever-Cloud
+    )
 cursor = db_connection.cursor()
 
 # Load JSON data
