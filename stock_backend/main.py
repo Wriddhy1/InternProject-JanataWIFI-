@@ -2,7 +2,8 @@ from fastapi import FastAPI, HTTPException
 import mysql.connector
 from pydantic import BaseModel
 from typing import List
-
+from fastapi.middleware.cors import CORSMiddleware
+import os
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
@@ -12,13 +13,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Database Connection
 def get_db_connection():
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="StockMarketDB"
+        host=os.getenv("MYSQL_ADDON_HOST"),
+        user=os.getenv("MYSQL_ADDON_USER"),
+        password=os.getenv("MYSQL_ADDON_PASSWORD"),
+        database=os.getenv("MYSQL_ADDON_DB"),
+        port=int(os.getenv("MYSQL_ADDON_PORT")),
+        ssl_disabled=False  # Enable SSL for Clever-Cloud
     )
 
 # Data Model for Validation
