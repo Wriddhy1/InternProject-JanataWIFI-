@@ -4,6 +4,13 @@ from pydantic import BaseModel
 from typing import List
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://internproject-janatawifi.onrender.com"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Database Connection
 def get_db_connection():
