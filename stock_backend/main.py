@@ -5,13 +5,6 @@ from typing import List
 from fastapi.middleware.cors import CORSMiddleware
 import os
 app = FastAPI()
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["https://internproject-janatawifi.onrender.com"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 def get_db_connection():
     return mysql.connector.connect(
@@ -36,13 +29,20 @@ class Stock(BaseModel):
 # 1️⃣ **Fetch all stocks**
 @app.get("/data")
 def get_stocks():
-    connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM Stocks")
-    stocks = cursor.fetchall()
-    cursor.close()
-    connection.close()
-    return stocks
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM Stocks LIMIT 1000")  # Add LIMIT to prevent overload
+        stocks = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        return stocks
+    except mysql.connector.Error as err:
+        print(f"Database error: {err}")
+        raise HTTPException(status_code=500, detail=f"Database error: {str(err)}")
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
 
 # 2️⃣ **Insert new stock data**
 @app.post("/data")
